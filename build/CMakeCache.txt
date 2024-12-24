@@ -239,15 +239,6 @@ hydro_IS_TOP_LEVEL:STATIC=ON
 //Value Computed by CMake
 hydro_SOURCE_DIR:STATIC=/home/hao-wei/Desktop/compiler
 
-//Value Computed by CMake
-hydrogen_BINARY_DIR:STATIC=/home/hao-wei/Desktop/compiler/build
-
-//Value Computed by CMake
-hydrogen_IS_TOP_LEVEL:STATIC=ON
-
-//Value Computed by CMake
-hydrogen_SOURCE_DIR:STATIC=/home/hao-wei/Desktop/compiler
-
 
 ########################
 # INTERNAL cache entries
