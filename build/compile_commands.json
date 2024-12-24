@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/home/hao-wei/Desktop/compiler/build",
+  "command": "/usr/bin/c++   -g -std=gnu++17 -o CMakeFiles/hydro.dir/src/main.cpp.o -c /home/hao-wei/Desktop/compiler/src/main.cpp",
+  "file": "/home/hao-wei/Desktop/compiler/src/main.cpp",
+  "output": "CMakeFiles/hydro.dir/src/main.cpp.o"
+}
+]
