@@ -6,23 +6,15 @@
 #include <sstream>
 #include <filesystem>
 
-enum class TokenType {
-    _return,
-    int_lit,
-    semi
-};
+#include "./tokenization.hpp"
 
-struct Token {
-    TokenType type;
-    std::optional<std::string> value;
-};
 
 std::string tokens_to_asm(const std::vector<Token>& tokens) {
-    std::stringstream output;
+    std::ostringstream output;
     output << "global _start\n_start:\n";
     for (int i = 0;i < tokens.size(); i++){
         const Token& token = tokens.at(i);
-        if (token.type == TokenType::_return) {
+        if (token.type == TokenType::exit) {
             if (i+1 < tokens.size() && tokens.at(i+1).type == TokenType::int_lit){
                 if (i+2 < tokens.size() && tokens.at(i+2).type == TokenType::semi){
                     output << "   mov rax, 60\n";
@@ -35,54 +27,6 @@ std::string tokens_to_asm(const std::vector<Token>& tokens) {
     return output.str();
 }
 
-std::vector<Token> tokenize(const std::string& str){
-    std::vector<Token> tokens;
-    std::string buf;
-    for (int i =0; i < str.length(); i++){
-        char c = str.at(i);
-        if (std::isalpha(c)){
-            buf.push_back(c);
-            i++;
-            while (std::isalnum(str.at(i))){
-                buf.push_back(str.at(i));
-                i++;
-            }
-            i--;
-            if (buf == "return"){
-                tokens.push_back(Token{TokenType::_return, buf});
-                buf.clear();
-                continue;
-            } else {
-                std::cerr << "You messed up!" << std::endl;
-                exit(EXIT_FAILURE);
-            }
-        }
-        else if (std::isdigit(c)){
-            buf.push_back(c);
-            i++;
-            while (std::isdigit(str.at(i))){
-                buf.push_back(str.at(i));
-                i++;
-            }
-            i--;
-            tokens.push_back(Token{TokenType::int_lit, buf});
-            buf.clear();
-            // continue;
-        }
-        else if (c == ';'){
-            tokens.push_back(Token{TokenType::semi, ";"});
-            continue;
-        }
-        // Handle other cases like punctuation and whitespace (
-        else if (std::isspace(c)){
-            continue;
-        } else {
-            std::cerr << "You messed up!" << std::endl;
-            exit(EXIT_FAILURE);
-        }
-    }
-    return tokens;
-}
 
 // char* argv[] is an array of pointers to characters (strings). 
 // Each element in the array is a pointer to a char (a string).
@@ -106,7 +50,8 @@ int main(int argc , char* argv[]) {
     // Print the contents of the file to the console.   
     std::cout << "File content:\n" << content;
     // The return value of the function is 0 (EXIT_SUCCESS).
-    std::vector<Token>  tokens = tokenize(content);
+    Tokenizer tokenizer(std::move(content));
+    std::vector<Token>  tokens = tokenizer.tokenize();
 
     std::cout << tokens_to_asm(tokens) << std::endl;
 
